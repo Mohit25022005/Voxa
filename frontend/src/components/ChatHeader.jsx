@@ -4,9 +4,12 @@ import { useChatStore } from "../store/useChatStore";
 
 const ChatHeader = () => {
   const { selectedUser, setSelectedUser } = useChatStore();
-  const { onlineUsers } = useAuthStore();
+  const { onlineUsers = [] } = useAuthStore(); // ✅ Default to empty array
 
-  if (!selectedUser) return null; // or show placeholder while no user selected
+  // Early return if no user is selected (optional, for extra safety)
+  if (!selectedUser) return null;
+
+  const isOnline = onlineUsers.includes?.(selectedUser._id); // ✅ Safe check
 
   return (
     <div className="p-2.5 border-b border-base-300">
@@ -23,7 +26,7 @@ const ChatHeader = () => {
           <div>
             <h3 className="font-medium">{selectedUser.fullName}</h3>
             <p className="text-sm text-base-content/70">
-              {(onlineUsers || []).includes(selectedUser._id) ? "Online" : "Offline"}
+              {isOnline ? "Online" : "Offline"}
             </p>
           </div>
         </div>

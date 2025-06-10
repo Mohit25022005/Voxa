@@ -1,6 +1,8 @@
 import axios from "axios";
 
 export const axiosInstance = axios.create({
-    baseURL:"http://localhost:5001/api",
-    withCredentials:true
-})
+  baseURL: import.meta.env.MODE === "development"
+    ? "http://localhost:5001/api"
+    : "https://voxa-e6gs.onrender.com/api",
+  withCredentials: true,
+});

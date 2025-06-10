@@ -20,16 +20,15 @@ const ChatContainer = () => {
   const messageEndRef = useRef(null);
 
   useEffect(() => {
-    if (!selectedUser?._id) return; // Safety check
-
     getMessages(selectedUser._id);
+
     subscribeToMessages();
 
     return () => unsubscribeFromMessages();
-  }, [selectedUser?._id, getMessages, subscribeToMessages, unsubscribeFromMessages]);
+  }, [selectedUser._id, getMessages, subscribeToMessages, unsubscribeFromMessages]);
 
   useEffect(() => {
-    if (messageEndRef.current && messages?.length) {
+    if (messageEndRef.current && messages) {
       messageEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [messages]);
@@ -40,15 +39,6 @@ const ChatContainer = () => {
         <ChatHeader />
         <MessageSkeleton />
         <MessageInput />
-      </div>
-    );
-  }
-
-  // Show a placeholder if no user is selected
-  if (!selectedUser) {
-    return (
-      <div className="flex-1 flex items-center justify-center text-gray-500">
-        Select a user to start chatting
       </div>
     );
   }
@@ -64,7 +54,7 @@ const ChatContainer = () => {
             className={`chat ${message.senderId === authUser._id ? "chat-end" : "chat-start"}`}
             ref={messageEndRef}
           >
-            <div className="chat-image avatar">
+            <div className=" chat-image avatar">
               <div className="size-10 rounded-full border">
                 <img
                   src={
@@ -93,13 +83,10 @@ const ChatContainer = () => {
             </div>
           </div>
         ))}
-        {/* Dummy div to scroll into view */}
-        <div ref={messageEndRef} />
       </div>
 
       <MessageInput />
     </div>
   );
 };
-
 export default ChatContainer;
